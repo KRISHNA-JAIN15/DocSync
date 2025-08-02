@@ -5,7 +5,16 @@ import { useSession } from "next-auth/react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { useToast } from "@/hooks/use-toast"
-import { Users, Copy, Home, CheckCircle, AlertTriangle, RefreshCw, Save, Loader2 } from "lucide-react"
+import {
+  Users,
+  Copy,
+  Home,
+  CheckCircle,
+  AlertTriangle,
+  RefreshCw,
+  Save,
+  Loader2,
+} from "lucide-react"
 import Link from "next/link"
 import dynamic from "next/dynamic"
 import type { Document, DocumentUser } from "@/lib/models/document"
@@ -15,6 +24,7 @@ import { useBrowser } from "@/hooks/use-browser"
 import { copyToClipboard } from "@/lib/clipboard"
 import { useKeyboardShortcuts } from "@/hooks/use-keyboard-shortcuts"
 
+// ⌨️ Monaco Editor (lazy loaded)
 const MonacoEditor = dynamic(() => import("@/components/monaco-editor"), {
   ssr: false,
   loading: () => (
@@ -392,11 +402,11 @@ export function EditorContent({ documentId, accessKey }: EditorContentProps) {
   }
 
   return (
-    <div className="h-screen flex flex-col bg-white">
+    <div className="h-screen flex flex-col bg-white overflow-hidden">
       {connectionError && (
-        <Alert variant="destructive" className="rounded-none border-x-0 border-t-0">
+        <Alert variant="destructive" className="rounded-none border-x-0 border-t-0 px-4 sm:px-6">
           <AlertTriangle className="h-4 w-4" />
-          <AlertDescription className="flex items-center justify-between">
+          <AlertDescription className="flex flex-col sm:flex-row items-start sm:items-center justify-between w-full gap-2">
             <span>
               <strong>Connection Error:</strong> {connectionError}
             </span>
@@ -409,7 +419,7 @@ export function EditorContent({ documentId, accessKey }: EditorContentProps) {
       )}
 
       {isConnected && (
-        <Alert className="rounded-none border-x-0 border-t-0 bg-green-50 border-green-200">
+        <Alert className="rounded-none border-x-0 border-t-0 bg-green-50 border-green-200 px-4 sm:px-6">
           <CheckCircle className="h-4 w-4 text-green-600" />
           <AlertDescription className="text-green-800">
             <strong>Real-time collaboration active!</strong> Changes sync instantly across all users.
@@ -417,8 +427,8 @@ export function EditorContent({ documentId, accessKey }: EditorContentProps) {
         </Alert>
       )}
 
-      <header className="bg-white border-b px-6 py-4 flex items-center justify-between shadow-sm">
-        <div className="flex items-center gap-4">
+      <header className="bg-white border-b px-4 sm:px-6 py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 w-full sm:w-auto">
           <h1 className="text-xl font-semibold text-gray-900">{document.name}</h1>
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-2">
@@ -427,11 +437,15 @@ export function EditorContent({ documentId, accessKey }: EditorContentProps) {
                 {userCount} online
               </Badge>
             </div>
-            <ConnectionStatus isConnected={isConnected} userCount={userCount} error={connectionError} />
+            <ConnectionStatus
+              isConnected={isConnected}
+              userCount={userCount}
+              error={connectionError}
+            />
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap gap-2">
           <Button
             variant={hasUnsavedChanges ? "default" : "outline"}
             size="sm"
@@ -470,31 +484,40 @@ export function EditorContent({ documentId, accessKey }: EditorContentProps) {
 
       {/* Save Status */}
       {(lastSaved || hasUnsavedChanges) && (
-        <div className="bg-gray-50 border-b px-6 py-2 text-sm text-gray-600">
+        <div className="bg-gray-50 border-b px-4 sm:px-6 py-2 text-sm text-gray-600">
           {hasUnsavedChanges ? (
             <span className="text-orange-600">● Unsaved changes - auto-saving...</span>
           ) : lastSaved ? (
-            <span className="text-green-600">✓ Last saved: {lastSaved.toLocaleTimeString()}</span>
+            <span className="text-green-600">
+              ✓ Last saved: {lastSaved.toLocaleTimeString()}
+            </span>
           ) : null}
         </div>
       )}
 
-      <div className="flex-1 overflow-hidden">
-        <MonacoEditor value={content} onChange={handleContentChange} language={document.language || "javascript"} />
+      {/* Editor */}
+      <div className="flex-1 min-h-0 overflow-hidden">
+        <MonacoEditor
+          value={content}
+          onChange={handleContentChange}
+          language={document.language || "javascript"}
+        />
       </div>
 
       {/* Online Users */}
       {onlineUsers.length > 0 && (
-        <div className="bg-gray-50 border-t px-6 py-3">
-          <div className="flex items-center gap-3 text-sm text-gray-600">
+        <div className="bg-gray-50 border-t px-4 sm:px-6 py-3">
+          <div className="flex flex-wrap items-center gap-2 text-sm text-gray-600">
             <Users className="h-4 w-4" />
             <span className="font-medium">Online:</span>
-            <div className="flex items-center gap-2 flex-wrap">
+            <div className="flex flex-wrap items-center gap-2">
               {onlineUsers.map((user, index) => (
                 <div key={user.id} className="flex items-center gap-1">
                   <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                   <span className="font-medium">{user.name}</span>
-                  {index < onlineUsers.length - 1 && <span className="text-gray-400">,</span>}
+                  {index < onlineUsers.length - 1 && (
+                    <span className="text-gray-400">,</span>
+                  )}
                 </div>
               ))}
             </div>
