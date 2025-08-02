@@ -20,7 +20,7 @@ export default async function HomePage() {
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-2">
               <Code className="h-8 w-8 text-blue-600" />
-              <span className="text-2xl font-bold text-gray-900">CodeSpace</span>
+              <span className="text-2xl font-bold text-gray-900">DocSync</span>
             </div>
             <SignInButton />
           </div>
@@ -44,7 +44,7 @@ export default async function HomePage() {
           </h1>
 
           <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto leading-relaxed">
-            The most powerful collaborative code editor. Write, share, and build amazing projects together with your
+            The most powerful collaborative File editor. Write, share, and build amazing projects together with your
             team in real-time. No setup required.
           </p>
 
@@ -93,7 +93,7 @@ export default async function HomePage() {
             </CardHeader>
             <CardContent className="text-center">
               <CardDescription className="text-base leading-relaxed">
-                Professional code editing with syntax highlighting, IntelliSense, and support for 30+ languages.
+                Professional code editing with syntax highlighting, IntelliSense, and support for 10+ languages.
               </CardDescription>
             </CardContent>
           </Card>
@@ -147,7 +147,7 @@ export default async function HomePage() {
         <div className="container mx-auto px-6">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div>
-              <h3 className="text-4xl font-bold text-gray-900 mb-6">Why developers choose CodeSpace</h3>
+              <h3 className="text-4xl font-bold text-gray-900 mb-6">Why developers choose DocSync</h3>
               <div className="space-y-6">
                 <div className="flex items-start gap-4">
                   <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
@@ -219,7 +219,7 @@ export default async function HomePage() {
           <div className="text-center">
             <div className="flex items-center justify-center gap-2 mb-4">
               <Code className="h-6 w-6" />
-              <span className="text-xl font-bold">CodeSpace</span>
+              <span className="text-xl font-bold">DocSync</span>
             </div>
             <p className="text-gray-400">Built with ❤️ for developers who love to collaborate</p>
           </div>
